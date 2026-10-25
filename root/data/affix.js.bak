@@ -1,0 +1,49 @@
+// 字首／字尾單元。單字格式：["字首|字根", IPA, 中文]，"|" 切開詞綴與其餘部分
+// lv: 1=最簡單 2=中等 3=進階
+window.AFFIX = {
+  prefixes: [
+  {p:"un",g:"不；相反",em:"🙅",lv:1,tip:"un = 說「不要！」。happy 加 un 就變成不快樂。",words:[["un|happy","ʌnˈhæpi","不快樂的"],["un|lock","ʌnˈlɑk","開鎖"],["un|do","ʌnˈdu","復原；解開"],["un|fair","ʌnˈfɛr","不公平的"],["un|kind","ʌnˈkaɪnd","不友善的"]]},
+  {p:"re",g:"再一次；回",em:"🔁",lv:1,tip:"re = 重播鍵 ⏪。再來一次、回到原處。",words:[["re|do","riˈdu","重做"],["re|play","riˈpleɪ","重播"],["re|write","riˈraɪt","重寫"],["re|turn","rɪˈtɜrn","返回"],["re|view","rɪˈvju","複習"]]},
+  {p:"pre",g:"先；之前",em:"⏮️",lv:1,tip:"pre = 預告片 preview：事情發生「之前」先看。",words:[["pre|view","ˈprivju","預告"],["pre|pare","prɪˈpɛr","準備"],["pre|school","ˈpriskul","幼稚園"],["pre|test","ˈpritɛst","前測"]]},
+  {p:"mis",g:"錯誤",em:"❌",lv:1,tip:"mis = miss（失誤）。做錯了、弄錯了。",words:[["mis|take","mɪˈsteɪk","錯誤"],["mis|spell","mɪsˈspɛl","拼錯"],["mis|place","mɪsˈpleɪs","放錯地方"],["mis|understand","ˌmɪsʌndərˈstænd","誤會"]]},
+  {p:"over",g:"過度；在上面",em:"🔝",lv:1,tip:"over = 超過頭了。吃太多 overeat。",words:[["over|eat","ˌoʊvərˈit","吃太多"],["over|time","ˈoʊvərˌtaɪm","加班"],["over|weight","ˌoʊvərˈweɪt","過重的"],["over|come","ˌoʊvərˈkʌm","克服"]]},
+  {p:"under",g:"在下面；不足",em:"⬇️",lv:1,tip:"under = 在底下。underline 就是畫在底下的線。",words:[["under|line","ˈʌndərˌlaɪn","底線"],["under|wear","ˈʌndərˌwɛr","內衣"],["under|ground","ˈʌndərˌgraʊnd","地下的"],["under|stand","ˌʌndərˈstænd","了解"]]},
+
+  {p:"dis",g:"分開；不",em:"✂️",lv:2,tip:"dis = 剪刀分開。like 的相反就是 dislike。",words:[["dis|like","dɪsˈlaɪk","不喜歡"],["dis|appear","ˌdɪsəˈpɪr","消失"],["dis|agree","ˌdɪsəˈgri","不同意"],["dis|cover","dɪˈskʌvər","發現"]]},
+  {p:"in / im",g:"往內；不",em:"⬇️",lv:2,tip:"in 有兩個意思：往內（inside）和不（impossible）。b、m、p 前面變 im。",words:[["in|side","ˌɪnˈsaɪd","裡面"],["in|come","ˈɪnˌkʌm","收入"],["im|possible","ɪmˈpɑsəbəl","不可能的"],["in|visible","ɪnˈvɪzəbəl","看不見的"]]},
+  {p:"ex / e",g:"向外",em:"⬆️",lv:2,tip:"ex = 出口 EXIT：往外走。",words:[["ex|it","ˈɛgzɪt","出口"],["ex|port","ɪkˈspɔrt","出口（貨）"],["ex|change","ɪksˈtʃeɪndʒ","交換"],["ex|press","ɪkˈsprɛs","表達"]]},
+  {p:"sub",g:"在下面",em:"🔽",lv:2,tip:"sub = 潛水艇 submarine：在海面下。",words:[["sub|way","ˈsʌbˌweɪ","地鐵"],["sub|marine","ˈsʌbməˌrin","潛水艇"],["sub|title","ˈsʌbˌtaɪtl","字幕"],["sub|tract","səbˈtrækt","減去"]]},
+  {p:"inter",g:"之間；互相",em:"↔️",lv:2,tip:"inter = 兩者之間：internet 是把大家連在一起的網路。",words:[["inter|net","ˈɪntərˌnɛt","網際網路"],["inter|view","ˈɪntərˌvju","面談；訪問"],["inter|national","ˌɪntərˈnæʃənəl","國際的"],["inter|section","ˌɪntərˈsɛkʃən","十字路口"]]},
+  {p:"super",g:"超級；在上",em:"🦸",lv:2,tip:"super = 超人 Superman，超級厲害。",words:[["super|man","ˈsupərˌmæn","超人"],["super|market","ˈsupərˌmɑrkɪt","超級市場"],["super|star","ˈsupərˌstɑr","超級巨星"],["super|power","ˈsupərˌpaʊər","超能力"]]},
+  {p:"auto",g:"自己；自動",em:"🤖",lv:2,tip:"auto = 自己會動：automatic。",words:[["auto|matic","ˌɔtəˈmætɪk","自動的"],["auto|graph","ˈɔtəˌgræf","親筆簽名"],["auto|mobile","ˈɔtəmoʊˌbil","汽車"],["auto|pilot","ˈɔtoʊˌpaɪlət","自動駕駛"]]},
+  {p:"anti",g:"反對；對抗",em:"🚫",lv:2,tip:"anti = 打叉叉，對抗什麼就加什麼。",words:[["anti|virus","ˌæntiˈvaɪrəs","防毒的"],["anti|social","ˌæntiˈsoʊʃəl","反社交的"],["anti|clockwise","ˌæntiˈklɑkˌwaɪz","逆時針"]]},
+
+  {p:"pro",g:"向前；贊成",em:"➡️",lv:3,tip:"pro = 往前衝。",words:[["pro|tect","prəˈtɛkt","保護"],["pro|duce","prəˈdus","生產"],["pro|mote","prəˈmoʊt","推廣；升職"],["pro|ject","ˈprɑdʒɛkt","專題；計畫"]]},
+  {p:"con / com",g:"一起",em:"🤝",lv:3,tip:"con/com = 一起。connect 是連在一起。",words:[["con|nect","kəˈnɛkt","連接"],["com|pare","kəmˈpɛr","比較"],["com|munity","kəˈmjunəti","社區"],["com|pany","ˈkʌmpəni","公司"]]},
+  {p:"trans",g:"跨越；轉變",em:"🌉",lv:3,tip:"trans = 跨過橋 🌉：transport 運過去。",words:[["trans|port","trænˈspɔrt","運輸"],["trans|late","trænsˈleɪt","翻譯"],["trans|form","trænsˈfɔrm","轉變"],["trans|fer","trænsˈfɜr","轉移"]]},
+  {p:"de",g:"向下；離開；相反",em:"📉",lv:3,tip:"de = 往下掉、拿掉。",words:[["de|crease","dɪˈkris","減少"],["de|frost","diˈfrɔst","解凍"],["de|scribe","dɪˈskraɪb","描述"],["de|stroy","dɪˈstrɔɪ","摧毀"]]},
+  {p:"post",g:"之後",em:"⏭️",lv:3,tip:"post = 之後：P.S. 就是信寫完之後。",words:[["post|pone","poʊstˈpoʊn","延後"],["post|script","ˈpoʊsˌskrɪpt","附註 P.S."],["post|war","poʊstˈwɔr","戰後的"]]},
+  {p:"per",g:"穿透；完全",em:"🏹",lv:3,tip:"per = 穿過去、做到底。",words:[["per|fect","ˈpɜrfɪkt","完美的"],["per|form","pərˈfɔrm","表演"],["per|mit","pərˈmɪt","允許"],["per|manent","ˈpɜrmənənt","永久的"]]},
+  {p:"ad",g:"朝向",em:"🎯",lv:3,tip:"ad = 朝目標前進。",words:[["ad|mit","ədˈmɪt","承認"],["ad|vance","ədˈvæns","前進"],["ad|venture","ədˈvɛntʃər","冒險"],["ad|jective","ˈædʒɪktɪv","形容詞"]]},
+  {p:"ob",g:"面對；擋住",em:"🚧",lv:3,tip:"ob = 擋在面前。",words:[["ob|ey","oʊˈbeɪ","服從"],["ob|serve","əbˈzɜrv","觀察"],["ob|ject","ˈɑbdʒɪkt","物體"],["ob|struct","əbˈstrʌkt","阻擋"]]},
+  {p:"contra",g:"相反",em:"🔀",lv:3,tip:"contra = 唱反調。",words:[["contra|dict","ˌkɑntrəˈdɪkt","反駁"],["contra|st","ˈkɑntræst","對比"],["contra|ry","ˈkɑntrɛri","相反的"]]}
+  ],
+
+  suffixes: [
+  {p:"-er / -or",g:"做…的人／東西",em:"🧑",lv:1,tip:"teach 教 + er 人 = 老師。",words:[["teach|er","ˈtitʃər","老師"],["play|er","ˈpleɪər","玩的人；選手"],["sing|er","ˈsɪŋər","歌手"],["act|or","ˈæktər","演員"],["visit|or","ˈvɪzɪtər","訪客"]]},
+  {p:"-ful",g:"充滿…的",em:"😊",lv:1,tip:"ful = full 滿。help 幫助 + ful 滿 = 很有幫助的。",words:[["help|ful","ˈhɛlpfəl","有幫助的"],["care|ful","ˈkɛrfəl","小心的"],["color|ful","ˈkʌlərfəl","色彩豐富的"],["beauti|ful","ˈbjutɪfəl","美麗的"],["thank|ful","ˈθæŋkfəl","感恩的"]]},
+  {p:"-less",g:"沒有…的",em:"🚫",lv:1,tip:"less = 少。care 小心 + less = 不小心。",words:[["care|less","ˈkɛrləs","粗心的"],["home|less","ˈhoʊmləs","無家可歸的"],["hope|less","ˈhoʊpləs","絕望的"],["end|less","ˈɛndləs","無盡的"]]},
+  {p:"-ly",g:"…地（形容動作）",em:"🐢",lv:1,tip:"形容詞 + ly = 副詞：slow → slowly 慢慢地。",words:[["slow|ly","ˈsloʊli","慢慢地"],["quick|ly","ˈkwɪkli","快速地"],["happi|ly","ˈhæpəli","快樂地"],["careful|ly","ˈkɛrfəli","小心地"]]},
+  {p:"-y",g:"…的（形容詞）",em:"🌧️",lv:1,tip:"名詞 + y = 形容詞：rain → rainy 下雨的。",words:[["rain|y","ˈreɪni","下雨的"],["sun|ny","ˈsʌni","晴朗的"],["fun|ny","ˈfʌni","好笑的"],["wind|y","ˈwɪndi","有風的"],["sleep|y","ˈslipi","想睡的"]]},
+
+  {p:"-ness",g:"…的狀態（名詞）",em:"💭",lv:2,tip:"形容詞 + ness = 名詞：kind → kindness 善良。",words:[["happi|ness","ˈhæpinəs","快樂"],["kind|ness","ˈkaɪndnəs","善良"],["dark|ness","ˈdɑrknəs","黑暗"],["sad|ness","ˈsædnəs","悲傷"]]},
+  {p:"-able / -ible",g:"可以…的",em:"✅",lv:2,tip:"able = 能夠。wash 洗 + able = 可以洗的。",words:[["wash|able","ˈwɑʃəbəl","可洗的"],["drink|able","ˈdrɪŋkəbəl","可飲用的"],["comfort|able","ˈkʌmftərbəl","舒服的"],["poss|ible","ˈpɑsəbəl","可能的"]]},
+  {p:"-ment",g:"動作的結果（名詞）",em:"📦",lv:2,tip:"動詞 + ment = 名詞：move → movement 運動。",words:[["move|ment","ˈmuvmənt","運動；移動"],["pay|ment","ˈpeɪmənt","付款"],["govern|ment","ˈgʌvərnmənt","政府"],["excite|ment","ɪkˈsaɪtmənt","興奮"]]},
+  {p:"-tion / -ion",g:"動作／狀態（名詞）",em:"📝",lv:2,tip:"動詞 + tion/ion = 名詞：act → action 行動。唸 /ʃən/。",words:[["ac|tion","ˈækʃən","行動"],["educa|tion","ˌɛdʒəˈkeɪʃən","教育"],["collec|tion","kəˈlɛkʃən","收藏"],["direc|tion","dəˈrɛkʃən","方向"]]},
+  {p:"-ist",g:"專家；…者",em:"🎨",lv:2,tip:"ist = 專門做這件事的人。",words:[["art|ist","ˈɑrtɪst","藝術家"],["scien|tist","ˈsaɪəntɪst","科學家"],["pian|ist","piˈænɪst","鋼琴家"],["dent|ist","ˈdɛntɪst","牙醫"]]},
+
+  {p:"-ous",g:"充滿…的（形容詞）",em:"⚠️",lv:3,tip:"ous = 有很多那種特質。danger + ous = 危險的。",words:[["danger|ous","ˈdeɪndʒərəs","危險的"],["fam|ous","ˈfeɪməs","有名的"],["nerv|ous","ˈnɜrvəs","緊張的"],["delici|ous","dɪˈlɪʃəs","美味的"]]},
+  {p:"-ive",g:"有…傾向的",em:"🌟",lv:3,tip:"ive = 喜歡做那件事。act + ive = 活躍的。",words:[["act|ive","ˈæktɪv","活躍的"],["creat|ive","kriˈeɪtɪv","有創意的"],["attract|ive","əˈtræktɪv","吸引人的"],["nat|ive","ˈneɪtɪv","本地的"]]},
+  {p:"-al",g:"…的（形容詞）",em:"🎵",lv:3,tip:"al 把名詞變形容詞：music → musical。",words:[["music|al","ˈmjuzɪkəl","音樂的"],["natur|al","ˈnætʃərəl","自然的"],["nation|al","ˈnæʃənəl","國家的"],["person|al","ˈpɜrsənəl","個人的"]]}
+  ]
+};

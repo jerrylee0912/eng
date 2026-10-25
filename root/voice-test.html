@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>發音重音對照測試</title>
+<style>
+body{margin:0;font-family:"Segoe UI","Microsoft JhengHei",sans-serif;background:#fff8ec;color:#2b2b3a;padding:16px;max-width:900px;margin:0 auto}
+h1{font-size:22px}
+table{border-collapse:collapse;width:100%;background:#fff}
+th,td{border:1px solid #eadfc8;padding:8px;text-align:center;font-size:15px}
+td.w{text-align:left;font-weight:800;font-size:18px}
+td.w small{display:block;font-weight:400;color:#6b6b80;font-size:13px}
+button{border:2px solid #2b2b3a;background:#fff;border-radius:99px;padding:5px 12px;cursor:pointer;font-weight:700}
+button:active{background:#ffe9a8}
+.note{background:#fff7d6;border-radius:12px;padding:10px 14px;margin:10px 0;font-size:14px;line-height:1.7}
+</style>
+</head>
+<body>
+<h1>🎧 發音重音對照測試（請用 Edge 開啟）</h1>
+<div class="note">
+目前語音：<b id="vname">偵測中…</b><br>
+每個字有 5 種唸法，請聽哪一種的<b>重音位置</b>跟「正確重音」欄一致，再告訴我是 A～E 哪一種（可以每個字都回報）。<br>
+A 單獨唸　B 加前導詞（to / a）　C 放進例句　D 用 SSML 指定音標（可能無效，無效時會唸成怪聲或無聲）　E 慢速單獨唸
+</div>
+<table id="t"><tr><th>單字</th><th>正確重音</th><th>A</th><th>B</th><th>C</th><th>D</th><th>E</th></tr></table>
+<script>
+const WORDS=[
+ ["unlock","ʌnˈlɑk","UN-LOCK（後）","to unlock","Please unlock the door."],
+ ["mistake","mɪˈsteɪk","mis-TAKE（後）","a mistake","I made a mistake."],
+ ["misplace","mɪsˈpleɪs","mis-PLACE（後）","to misplace","I misplaced my keys."],
+ ["prepare","prɪˈpɛr","pre-PARE（後）","to prepare","Mom is preparing dinner."],
+ ["return","rɪˈtɜrn","re-TURN（後）","to return","He will return at five."],
+ ["protect","prəˈtɛkt","pro-TECT（後）","to protect","Helmets protect your head."],
+ ["subway","ˈsʌbˌweɪ","SUB-way（前）","a subway","I take the subway to school."],
+ ["important","ɪmˈpɔrtənt","im-POR-tant（中）","very important","Sleep is important for kids."]
+];
+let voice=null;
+function pick(){const v=speechSynthesis.getVoices().filter(x=>x.lang==='en-US'||x.lang==='en_US');
+ voice=v.find(x=>/Natural|Online/i.test(x.name))||v.find(x=>/Aria|Jenny|Samantha|Google US|Zira/i.test(x.name))||v[0]||null;
+ document.getElementById('vname').textContent=voice?voice.name+'（'+voice.lang+'）':'找不到美式語音';}
+pick();speechSynthesis.onvoiceschanged=pick;
+function speak(t,rate){speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(t);u.lang='en-US';if(voice)u.voice=voice;u.rate=rate||.85;speechSynthesis.speak(u)}
+const t=document.getElementById('t');
+WORDS.forEach(([w,ipa,hint,carrier,sent])=>{
+ const ssml=`<speak version="1.0" xml:lang="en-US"><phoneme alphabet="ipa" ph="${ipa}">${w}</phoneme></speak>`;
+ const act=[()=>speak(w),()=>speak(carrier),()=>speak(sent),()=>speak(ssml),()=>speak(w,.55)];
+ const tr=document.createElement('tr');
+ tr.innerHTML=`<td class="w">${w}<small>/${ipa}/</small></td><td>${hint}</td>`+'ABCDE'.split('').map((k,i)=>`<td><button data-i="${i}">▶ ${k}</button></td>`).join('');
+ tr.querySelectorAll('button').forEach(b=>b.onclick=()=>act[+b.dataset.i]());
+ t.appendChild(tr);
+});
+</script>
+</body>
+</html>

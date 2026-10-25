@@ -1,0 +1,342 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>字根樂園 Word Roots</title>
+<style>
+:root{--bg:#fff8ec;--card:#fff;--ink:#2b2b3a;--sub:#6b6b80;--pre:#ff8a3d;--root:#2f80ed;--suf:#27ae60;--oth:#8e8e9e;--line:#eadfc8}
+*{box-sizing:border-box}
+body{margin:0;font-family:"Segoe UI","Microsoft JhengHei",sans-serif;background:var(--bg);color:var(--ink)}
+a{color:inherit;text-decoration:none}
+header{padding:16px 16px 4px;text-align:center}
+h1{margin:0;font-size:26px;cursor:pointer}
+main{max-width:920px;margin:0 auto;padding:8px 16px 60px}
+.btn{border:2px solid var(--ink);background:#fff;border-radius:999px;padding:7px 16px;font-size:15px;cursor:pointer;font-weight:600;display:inline-block}
+.btn.pri{background:var(--ink);color:#fff}
+.bar{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin:10px 0}
+.legend{text-align:center;font-size:13px;color:var(--sub);margin:4px 0 10px}
+.chip{display:inline-block;padding:1px 8px;border-radius:8px;color:#fff;font-weight:700;font-size:12px}
+.chip.p{background:var(--pre)}.chip.r{background:var(--root)}.chip.s{background:var(--suf)}.chip.o{background:var(--oth)}
+/* 地圖 */
+.summary{background:#fff;border:2px solid var(--line);border-radius:16px;padding:12px 16px;text-align:center;margin:8px 0}
+.pbar{height:12px;background:#eee;border-radius:99px;overflow:hidden;margin-top:8px}
+.pbar i{display:block;height:100%;background:var(--suf)}
+.stage{margin:22px 0;border-left:8px solid var(--c);padding-left:14px}
+.stage h2{margin:0;font-size:22px}
+.stage .d{color:var(--sub);font-size:14px;margin:2px 0 10px}
+.nodes{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:10px}
+.node{background:#fff;border:2px solid var(--c);border-radius:16px;padding:10px;text-align:center;box-shadow:0 3px 0 var(--c);position:relative}
+.node .e{font-size:34px}
+.node .n{font-weight:800;font-size:17px;color:var(--c)}
+.node .m{font-size:14px}
+.node .c{font-size:12px;color:var(--sub);margin-top:2px}
+.node.soon{opacity:.45;border-style:dashed;box-shadow:none;filter:grayscale(.6)}
+.node.done::after{content:"✅";position:absolute;top:4px;right:6px}
+.node:not(.soon):hover{transform:translateY(-2px)}
+.prefgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:10px}
+.pf{background:#fff;border:2px solid var(--line);border-radius:14px;padding:10px 12px}
+.pf b{color:var(--pre);font-size:20px}
+.pf .g{font-weight:700}
+.pf .x{font-size:13px;color:var(--sub)}
+/* 字根頁 */
+.root{background:var(--card);border:2px solid var(--line);border-radius:20px;padding:16px;margin:12px 0;box-shadow:0 4px 0 var(--line)}
+.rhead{display:flex;gap:14px;align-items:center}
+.big{font-size:56px;line-height:1}
+.rname{font-size:30px;font-weight:800;color:var(--root)}
+.rmean{font-size:18px;font-weight:700}
+.story{background:#eef5ff;border-radius:12px;padding:10px 12px;margin:12px 0 4px;font-size:15px}
+.note{background:#fff7d6;border-radius:12px;padding:8px 12px;margin:6px 0;font-size:14px}
+.word{border-top:2px dashed var(--line);padding:12px 0;display:grid;grid-template-columns:48px 1fr;gap:10px}
+.word.known{background:linear-gradient(90deg,#eafbef,transparent)}
+.word .em{font-size:38px;text-align:center}
+.wtop{display:flex;flex-wrap:wrap;align-items:center;gap:10px}
+.w{font-size:24px;font-weight:800}
+.ipa{color:var(--sub);font-size:16px}
+.lv{font-size:12px}
+.spk{border:none;background:var(--root);color:#fff;border-radius:50%;width:34px;height:34px;font-size:16px;cursor:pointer}
+.spk.s{width:26px;height:26px;font-size:12px}
+.spk:active{transform:scale(.9)}
+.parts{margin:6px 0;display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+.part{display:inline-flex;flex-direction:column;align-items:center;padding:4px 10px;border-radius:10px;color:#fff;font-weight:700}
+.part small{font-weight:400;font-size:12px;opacity:.95}
+.part.p{background:var(--pre)}.part.r{background:var(--root)}.part.s{background:var(--suf)}.part.o{background:var(--oth)}
+.plus{font-weight:800;color:var(--sub)}
+.zh{font-size:17px;font-weight:700}
+.mem{font-size:15px;margin-top:2px}
+.ex{font-size:14px;color:var(--sub);font-style:italic;margin-top:2px}
+.know{margin-top:6px;border:2px solid var(--suf);background:#fff;color:var(--suf);border-radius:99px;padding:3px 12px;font-weight:700;cursor:pointer;font-size:13px}
+.known .know{background:var(--suf);color:#fff}
+.cover .word .zh,.cover .word .mem,.cover .word .ex,.cover .word .parts{visibility:hidden}
+.cover .word.show .zh,.cover .word.show .mem,.cover .word.show .ex,.cover .word.show .parts{visibility:visible}
+.nav{display:flex;justify-content:space-between;margin:14px 0}
+.lvbar{display:flex;gap:6px;justify-content:center;align-items:center;flex-wrap:wrap;margin:6px 0;font-size:14px;color:var(--sub)}
+.lvbar button{border:2px solid var(--ink);background:#fff;border-radius:99px;padding:3px 12px;font-weight:700;cursor:pointer;font-size:13px}
+.lvbar button.on{background:var(--ink);color:#fff}
+.step{margin:22px 0 6px;font-size:20px;font-weight:800}
+.afx{background:#fff;border:2px solid var(--line);border-radius:18px;padding:12px 14px;margin:10px 0;box-shadow:0 3px 0 var(--line)}
+.afx .ah{display:flex;gap:10px;align-items:center}
+.afx .ae{font-size:36px}
+.afx .ap{font-size:26px;font-weight:800}
+.afx.pre .ap{color:var(--pre)}.afx.suf .ap{color:var(--suf)}
+.afx .ag{font-size:17px;font-weight:700}
+.afx .at{background:#fff3d6;border-radius:10px;padding:6px 10px;margin:8px 0;font-size:15px}
+.aw{display:flex;align-items:center;gap:8px;flex-wrap:wrap;padding:4px 0;border-top:1px dashed var(--line)}
+.aw .wd{font-size:20px;font-weight:800;min-width:150px}
+.aw .wd .a{color:var(--pre)}.aw .wd .b{color:var(--root)}
+.afx.suf .aw .wd .a{color:var(--suf)}
+.aw .z{font-weight:700}
+/* 測驗 */
+.quiz{background:#fff;border:2px solid var(--line);border-radius:20px;padding:20px;text-align:center}
+.qword{font-size:42px;font-weight:800}
+.opts{display:grid;gap:10px;margin:16px 0}
+.opt{padding:12px;font-size:18px;border:2px solid var(--ink);border-radius:14px;background:#fff;cursor:pointer;font-weight:600}
+.opt.ok{background:#c9f2d3;border-color:var(--suf)}
+.opt.no{background:#ffd5d5;border-color:#e74c3c}
+.fb{min-height:56px;font-size:16px}
+.score{color:var(--sub);margin-bottom:6px}
+</style>
+</head>
+<body>
+<header>
+  <a href="../index.html" style="font-size:14px;text-decoration:underline">🏠 回英文學習樂園首頁</a>
+  <h1 data-go="#map">🌳 字根樂園 Word Roots</h1>
+  <div class="legend"><span class="chip p">字首</span> 方向 ＋ <span class="chip r">字根</span> 核心意思 ＋ <span class="chip s">字尾</span> 詞性 ·
+    <span class="chip o">其他</span> · ⭐ 越多越難 · 🔊 美式發音<br>⚠️ 電腦語音的重音偶爾不準，<b>重音請以音標 ˈ 符號為準</b>（ˈ 後面那一拍要唸重）。建議用 Edge 瀏覽器，語音較自然。<br>🎙️ 目前語音：<span id="vname">偵測中…</span></div>
+</header>
+<main id="app"></main>
+
+<script src="data/plan.js"></script>
+<script src="data/batch1.js"></script>
+<script src="data/affix.js"></script>
+<!-- 之後新增批次：<script src="data/batch2.js"></script> -->
+<script>
+const $=s=>document.querySelector(s), app=$('#app');
+const ROOTS=window.BATCHES.flat();
+const byId=Object.fromEntries(ROOTS.map(r=>[r.id,r]));
+const ALLW=ROOTS.flatMap(r=>r.words.map(w=>({...w,rid:r.id})));
+const totalPlanned=window.PLAN.stages.reduce((n,s)=>n+s.roots.length,0);
+
+// 進度（localStorage 不可用時退回記憶體）
+let mem={};
+function loadKnown(){try{return JSON.parse(localStorage.getItem('wr_known')||'{}')}catch(e){return mem}}
+function saveKnown(k){mem=k;try{localStorage.setItem('wr_known',JSON.stringify(k))}catch(e){}}
+let known=loadKnown();
+
+// 難度篩選：只顯示 lv <= maxLv 的單字（預設全部）
+function loadLv(){try{return +(localStorage.getItem('wr_maxlv')||3)}catch(e){return 3}}
+let maxLv=loadLv();
+function setLv(n){maxLv=n;try{localStorage.setItem('wr_maxlv',n)}catch(e){}route()}
+const vis=w=>w.lv<=maxLv;
+const lvBar=()=>`<div class="lvbar">難度：${[[1,'⭐ 最簡單'],[2,'⭐⭐ 以下'],[3,'全部']].map(([n,t])=>`<button class="${maxLv===n?'on':''}" data-lv="${n}">${t}</button>`).join('')}</div>`;
+
+// 美式發音
+let voice=null;
+function pickVoice(){const v=speechSynthesis.getVoices().filter(x=>x.lang==='en-US'||x.lang==='en_US');voice=v.find(x=>/Natural|Online/i.test(x.name))||v.find(x=>/Aria|Jenny|Samantha|Google US|Zira/i.test(x.name))||v[0]||null}
+function showVoice(){const el=document.getElementById('vname');if(el)el.textContent=voice?voice.name+'（'+voice.lang+'）':'找不到美式語音，使用瀏覽器預設（可能不是美式）'}
+if('speechSynthesis' in window){pickVoice();showVoice();speechSynthesis.onvoiceschanged=()=>{pickVoice();showVoice()}}
+function say(t){if(!('speechSynthesis' in window))return;speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(t);u.lang='en-US';if(voice)u.voice=voice;u.rate=.85;speechSynthesis.speak(u)}
+
+// 字首字尾單字：整個字交給語音引擎唸（試過拆兩段唸，效果更差，已還原）
+function sayAffix(w){say(w.replace('|',''))}
+const esc=s=>String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/"/g,'&quot;');
+const partsHtml=ps=>ps.map(([t,k,g])=>`<span class="part ${k}">${t}<small>${g||'&nbsp;'}</small></span>`).join('<span class="plus">+</span>');
+const stars=n=>'⭐'.repeat(n);
+
+/* ========== 地圖 ========== */
+function renderMap(){
+  const VW=ALLW.filter(vis);
+  const done=VW.filter(w=>known[w.w]).length;
+  const readyRoots=ROOTS.length;
+  app.innerHTML=`
+  <div class="summary">
+    <b>🗺️ 學習地圖</b>　已開放 ${readyRoots} / ${totalPlanned} 個字根・目前顯示 ${VW.length} 個單字<br>
+    ✅ 我已經會：<b>${done}</b> / ${VW.length}
+    <div class="pbar"><i style="width:${VW.length?done/VW.length*100:0}%"></i></div>
+  </div>
+  ${lvBar()}
+  <div class="bar">
+    <a class="btn pri" href="#affix">🧩 第0關：字首字尾（先學這個！）</a>
+    <a class="btn pri" href="#quiz/all">🎮 全部混合測驗</a>
+  </div>
+  <section class="stage" style="--c:#ff8a3d">
+    <h2>第0關 🧩 字首字尾村（先從這裡開始！）</h2>
+    <div class="d">字首決定方向、字尾決定詞性，只有幾十個，學會後面學字根會輕鬆很多。</div>
+    <div class="nodes">${[['pre',1,'🔶','字首','un · re · pre · mis · over · under'],['pre',2,'🔶','字首','dis · in · ex · sub · inter…'],['pre',3,'🔶','字首','pro · con · trans · de…'],
+      ['suf',1,'🟢','字尾','-er · -ful · -less · -ly · -y'],['suf',2,'🟢','字尾','-ness · -able · -ment · -tion…'],['suf',3,'🟢','字尾','-ous · -ive · -al']]
+      .map(([t,n,e,name,ex])=>`<a class="node" style="--c:#ff8a3d" href="#affix/${t}/${n}"><div class="e">${e}</div><div class="n">${name} 第${n}站 ${'⭐'.repeat(n)}</div><div class="m" style="font-size:12px">${ex}</div></a>`).join('')}
+    </div>
+  </section>
+  ${window.PLAN.stages.map(s=>`
+  <section class="stage" style="--c:${s.color}">
+    <h2>第${s.id}關 ${s.star} ${s.title}</h2>
+    <div class="d">${s.desc}</div>
+    <div class="nodes">${s.roots.map(r=>{
+      const d=byId[r.id];
+      if(!d)return `<div class="node soon"><div class="e">${r.emoji}</div><div class="n">${r.name}</div><div class="m">${r.mean}</div><div class="c">🔒 之後開放</div></div>`;
+      const dw=d.words.filter(vis);
+      if(!dw.length)return `<div class="node soon"><div class="e">${r.emoji}</div><div class="n">${r.name}</div><div class="m">${r.mean}</div><div class="c">此難度沒有字</div></div>`;
+      const k=dw.filter(w=>known[w.w]).length, all=k===dw.length;
+      return `<a class="node ${all?'done':''}" href="#root/${r.id}"><div class="e">${r.emoji}</div><div class="n">${r.name}</div><div class="m">${r.mean}</div><div class="c">${k}/${dw.length} 字</div></a>`}).join('')}
+    </div>
+  </section>`).join('')}
+  <div class="legend">建議路線：第0關字首字尾 → 第1關由上到下。小四剛開始建議把難度調成「⭐ 最簡單」，熟了再放開。</div>`;
+}
+
+/* ========== 字首小抄 ========== */
+const STEP={1:'第1站 ⭐ 超簡單（國小常見）',2:'第2站 ⭐⭐ 中等（國中常見）',3:'第3站 ⭐⭐⭐ 進階'};
+const afxWord=(w,suf)=>{const [a,b]=w.split('|');return suf?`<span class="b">${a}</span><span class="a">${b}</span>`:`<span class="a">${a}</span><span class="b">${b}</span>`};
+function renderAffix(tab){
+  const suf=tab==='suf', list=(suf?AFFIX.suffixes:AFFIX.prefixes).filter(vis);
+  app.innerHTML=`
+  <div class="bar"><a class="btn" href="#map">⬅ 回地圖</a>
+    <button class="btn ${suf?'':'pri'}" data-go="#affix/pre">🔶 字首（${AFFIX.prefixes.length}）</button>
+    <button class="btn ${suf?'pri':''}" data-go="#affix/suf">🟢 字尾（${AFFIX.suffixes.length}）</button>
+    <a class="btn" href="#affixquiz/${suf?'suf':'pre'}">🎮 練習</a></div>
+  ${lvBar()}
+  <div class="root"><div class="rhead"><div class="big">${suf?'🏷️':'🧩'}</div><div><div class="rname">${suf?'字尾':'字首'}</div>
+    <div class="rmean">${suf?'字尾決定「詞性」：人？形容詞？名詞？':'字首決定「方向」：往內？往外？相反？'}</div></div></div>
+    <div class="story">💡 字根像「角色」，${suf?'字尾像「身份證」，告訴你這個字是什麼詞性':'字首像「方向」，加在前面改變意思'}。先學這個，後面學字根就輕鬆！建議從第1站開始，每站熟了再往下。</div></div>
+  ${[1,2,3].map(lv=>{const g=list.filter(x=>x.lv===lv);return g.length?`<div class="step" id="step${lv}">${STEP[lv]}</div>`+g.map(x=>`
+    <div class="afx ${suf?'suf':'pre'}">
+      <div class="ah"><div class="ae">${x.em}</div><div><div class="ap">${x.p}</div><div class="ag">${x.g}</div></div></div>
+      <div class="at">💡 ${x.tip}</div>
+      ${x.words.map(([w,ipa,zh])=>`<div class="aw"><span class="wd">${afxWord(w,suf)}</span><span class="ipa">/${ipa}/</span><button class="spk s" data-aff="${esc(w)}" data-ipa="${esc(ipa)}" data-suf="${suf?1:''}">🔊</button><span class="z">${zh}</span></div>`).join('')}
+    </div>`).join(''):''}).join('')}`;
+}
+
+/* 字首字尾練習 */
+let AQ=null;
+function startAffixQuiz(tab){
+  const src=tab==='suf'?AFFIX.suffixes:AFFIX.prefixes;
+  const items=src.filter(vis).flatMap(x=>x.words.map(w=>({x,w})));
+  const gs=src.filter(vis);
+  AQ={tab,gs,list:shuffle(items).slice(0,10),i:0,score:0};
+  nextAffixQ();
+}
+function nextAffixQ(){
+  if(AQ.i>=AQ.list.length){
+    const s=AQ.score,n=AQ.list.length;
+    app.innerHTML=`<div class="quiz"><div class="big">${s>=n*.9?'🏆':s>=n*.6?'🎉':'💪'}</div><div class="qword">${s} / ${n}</div>
+      <div class="bar"><button class="btn pri" data-go="#affixquiz/${AQ.tab}" id="again">🔁 再玩一次</button><a class="btn" href="#affix/${AQ.tab}">📖 回複習</a></div></div>`;
+    $('#again').onclick=()=>startAffixQuiz(AQ.tab);return;
+  }
+  const {x,w}=AQ.list[AQ.i], suf=AQ.tab==='suf', type=Math.random()<.6?'mean':'which';
+  const others=shuffle(AQ.gs.filter(y=>y.p!==x.p&&y.g!==x.g)).slice(0,3);
+  const opts=shuffle([x,...others]);
+  const full=w[0].replace('|','');
+  app.innerHTML=`<div class="bar"><a class="btn" href="#affix/${AQ.tab}">⬅ 離開</a></div>
+  <div class="quiz"><div class="score">第 ${AQ.i+1} / ${AQ.list.length} 題　得分 ${AQ.score}</div>
+   ${type==='mean'
+     ?`<div class="qword">${afxWord(w[0],suf)}</div><div class="ipa">/${w[1]}/ <button class="spk s" data-aff="${esc(w[0])}" data-ipa="${esc(w[1])}" data-suf="${suf?1:''}">🔊</button>　${w[2]}</div>
+       <div style="margin-top:8px">彩色的 <b>${x.p}</b> 是什麼意思？</div>`
+     :`<div style="font-size:20px">哪一個${suf?'字尾':'字首'}的意思是<br><b style="font-size:26px">「${x.g}」</b>？</div>
+       <div class="ipa">例：${w[0].replace('|','')}（${w[2]}）</div>`}
+   <div class="opts">${opts.map(o=>`<button class="opt" data-a="${esc(o.p)}">${type==='mean'?o.g:o.p}</button>`).join('')}</div>
+   <div class="fb" id="fb"></div><button class="btn pri" id="next" style="display:none">下一題 ➜</button></div>`;
+  sayAffix(w[0],w[1],suf);
+  let done=false;
+  app.querySelectorAll('.opt').forEach(b=>b.onclick=()=>{
+    if(done)return;done=true;
+    const ok=b.dataset.a===x.p;if(ok)AQ.score++;
+    b.classList.add(ok?'ok':'no');
+    if(!ok)app.querySelectorAll('.opt').forEach(o=>{if(o.dataset.a===x.p)o.classList.add('ok')});
+    $('#fb').innerHTML=`${ok?'🎉 答對了！':'答案：'}<b>${x.p}</b> = ${x.g}<br>💡 ${x.tip}`;
+    $('#next').style.display='inline-block';$('#next').onclick=()=>{AQ.i++;nextAffixQ()};
+  });
+}
+
+/* ========== 字根頁 ========== */
+function renderRoot(id,cover){
+  const r=byId[id]; if(!r){location.hash='#map';return}
+  const words=r.words.filter(vis).sort((a,b)=>a.lv-b.lv);
+  const idx=ROOTS.findIndex(x=>x.id===id), prev=ROOTS[idx-1], next=ROOTS[idx+1];
+  app.innerHTML=`
+  <div class="bar"><a class="btn" href="#map">🗺️ 地圖</a>
+    <button class="btn ${cover?'':'pri'}" data-go="#root/${id}">📖 學習</button>
+    <button class="btn ${cover?'pri':''}" data-go="#root/${id}/cover">🙈 遮住自測</button>
+    <a class="btn" href="#quiz/${id}">🎮 小測驗</a></div>
+  ${lvBar()}
+  <section class="root ${cover?'cover':''}">
+    <div class="rhead"><div class="big">${r.emoji}</div><div><div class="rname">${r.root}</div><div class="rmean">${r.mean}　<span class="lv">${words.length} 個單字</span></div></div></div>
+    <div class="story">💡 ${r.story}</div>
+    ${r.note?`<div class="note">📌 ${r.note}</div>`:''}
+    ${words.map(w=>`
+    <div class="word ${known[w.w]?'known':''}" data-w="${esc(w.w)}">
+      <div class="em">${w.em}</div>
+      <div>
+        <div class="wtop"><span class="w">${w.w}</span><span class="ipa">/${w.ipa}/</span><span class="lv">${stars(w.lv)}</span>
+          <button class="spk" data-say="${esc(w.w)}" title="美式發音">🔊</button></div>
+        <div class="parts">${partsHtml(w.parts)}</div>
+        <div class="zh">${w.zh}</div>
+        <div class="mem">🧠 ${w.mem}</div>
+        <div class="ex">“${w.ex}” <button class="spk s" data-say="${esc(w.ex)}">🔊</button></div>
+        <button class="know" data-know="${esc(w.w)}">${known[w.w]?'✅ 我會了':'☐ 我會了'}</button>
+      </div>
+    </div>`).join('')}
+  </section>
+  <div class="nav">${prev?`<a class="btn" href="#root/${prev.id}">⬅ ${prev.root}</a>`:'<span></span>'}${next?`<a class="btn" href="#root/${next.id}">${next.root} ➡</a>`:'<span></span>'}</div>`;
+}
+
+/* ========== 測驗 ========== */
+let score=0,total=0;
+const shuffle=a=>a.map(x=>[Math.random(),x]).sort((a,b)=>a[0]-b[0]).map(x=>x[1]);
+function renderQuiz(scope){
+  const pool=(scope==='all'?ALLW:ALLW.filter(w=>w.rid===scope)).filter(vis);
+  if(!pool.length){location.hash='#map';return}
+  const back=scope==='all'?'#map':`#root/${scope}`;
+  const q=pool[Math.floor(Math.random()*pool.length)];
+  const type=Math.random()<.5?'en2zh':'zh2en';
+  // 干擾選項：同字根優先，不夠再從所有目前難度的字補
+  const cand=x=>x.w!==q.w&&x.zh!==q.zh;
+  const near=shuffle(pool.filter(cand)).slice(0,3);
+  const others=near.concat(shuffle(ALLW.filter(vis).filter(x=>cand(x)&&!near.includes(x))).slice(0,3-near.length));
+  const opts=shuffle([q,...others]);
+  const head=type==='en2zh'
+    ?`<div class="big">${q.em}</div><div class="qword">${q.w}</div><div class="ipa">/${q.ipa}/ <button class="spk s" data-say="${esc(q.w)}">🔊</button></div>
+      <div class="parts" style="justify-content:center;margin-top:10px">${partsHtml(q.parts)}</div>`
+    :`<div class="big">${q.em}</div><div class="qword" style="font-size:30px">${q.zh}</div>
+      <div class="parts" style="justify-content:center;margin-top:10px">${partsHtml(q.parts.map(([t,k,g])=>[k==='r'||k==='p'?'?':t,k,g]))}</div><div class="legend">看意思拆解，猜是哪個單字</div>`;
+  app.innerHTML=`<div class="bar"><a class="btn" href="${back}">⬅ 返回</a></div>
+  <div class="quiz"><div class="score">得分 ${score} / ${total}</div>${head}
+    <div class="opts">${opts.map(o=>`<button class="opt" data-a="${esc(o.w)}">${type==='en2zh'?o.zh:o.w}</button>`).join('')}</div>
+    <div class="fb" id="fb"></div><button class="btn pri" id="next" style="display:none">下一題 ➜</button></div>`;
+  if(type==='en2zh')say(q.w);
+  let done=false;
+  app.querySelectorAll('.opt').forEach(b=>b.onclick=()=>{
+    if(done)return;done=true;total++;
+    const ok=b.dataset.a===q.w;
+    if(ok){score++;b.classList.add('ok');$('#fb').innerHTML='🎉 答對了！<br>🧠 '+q.mem}
+    else{b.classList.add('no');app.querySelectorAll('.opt').forEach(x=>{if(x.dataset.a===q.w)x.classList.add('ok')});$('#fb').innerHTML=`答案：<b>${q.w}</b>（${q.zh}）<br>🧠 ${q.mem}`}
+    if(type==='zh2en')say(q.w);
+    $('#next').style.display='inline-block';$('#next').onclick=()=>renderQuiz(scope);
+  });
+}
+
+/* ========== 路由與事件 ========== */
+function route(){
+  const [v,a,b]=(location.hash||'#map').slice(1).split('/');
+  window.scrollTo(0,0);
+  if(v==='root')renderRoot(a,b==='cover');
+  else if(v==='affix'||v==='prefix'){renderAffix(a==='suf'?'suf':'pre');const el=b&&document.getElementById('step'+b);if(el)el.scrollIntoView()}
+  else if(v==='affixquiz')startAffixQuiz(a==='suf'?'suf':'pre');
+  else if(v==='quiz'){score=0;total=0;renderQuiz(a||'all')}
+  else renderMap();
+}
+window.addEventListener('hashchange',route);
+document.addEventListener('click',e=>{
+  const t=e.target.closest('[data-say],[data-aff],[data-know],[data-go],[data-lv],.cover .word');
+  if(!t)return;
+  if(t.dataset.aff){sayAffix(t.dataset.aff,t.dataset.ipa,!!t.dataset.suf);return}
+  if(t.dataset.lv){setLv(+t.dataset.lv);return}
+  if(t.dataset.say){say(t.dataset.say);return}
+  if(t.dataset.go){location.hash=t.dataset.go;return}
+  if(t.dataset.know){
+    const w=t.dataset.know; if(known[w])delete known[w];else known[w]=1; saveKnown(known);
+    const el=t.closest('.word');el.classList.toggle('known',!!known[w]);t.textContent=known[w]?'✅ 我會了':'☐ 我會了';return}
+  if(t.classList.contains('word'))t.classList.toggle('show');
+});
+route();
+</script>
+</body>
+</html>
